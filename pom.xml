@@ -12,7 +12,7 @@
         <java.version>21</java.version>
         <spring.boot.version>3.2.0</spring.boot.version>
         <lombok.version>1.18.30</lombok.version>
-        <protobuf.version>4.27.2</protobuf.version>
+        <protobuf.version>3.12.0</protobuf.version>
         <picocli.version>4.7.6</picocli.version>
         <spring.core.version>6.1.11</spring.core.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -78,15 +78,30 @@
         </extensions>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Main-Class>org.mb.tech.CLICommand</Main-Class>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>org.mb.tech.CLICommand</mainClass>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>
                 <version>0.6.1</version>
                 <configuration>
-                    <protocArtifact>com.google.protobuf:protoc:4.27.2:exe:${os.detected.classifier}</protocArtifact>
+                    <protocArtifact>com.google.protobuf:protoc:3.12.0:exe:${os.detected.classifier}</protocArtifact>
                     <protoSourceRoot>${project.basedir}/src/main/resources/protobuf</protoSourceRoot>
                     <outputDirectory>${project.build.directory}/generated-sources/protobuf/java</outputDirectory>
                 </configuration>
@@ -94,7 +109,6 @@
                     <execution>
                         <goals>
                             <goal>compile</goal>
-                            <goal>compile-custom</goal>
                         </goals>
                     </execution>
                 </executions>

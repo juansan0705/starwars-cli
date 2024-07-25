@@ -8,6 +8,7 @@ import org.mb.tech.proto.Person;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
+
 import java.io.File;
 import java.util.Properties;
 import java.util.concurrent.Callable;
@@ -43,8 +44,8 @@ public class CLICommand implements Callable<Integer> {
 
         // Create Protobuf object from JSON
         Person person = Person.newBuilder()
-                .setId(jsonNode.get("id").asInt())
                 .setName(jsonNode.get("name").asText())
+                .setId(jsonNode.get("id").asInt())
                 .setEmail(jsonNode.get("email").asText())
                 .build();
 

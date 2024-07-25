@@ -7,7 +7,7 @@ option java_package = "org.mb.tech.proto";
 option java_outer_classname = "PersonOuterClass";
 
 message Person {
-    int32 id = 2;
     string name = 1;
+    int32 id = 2;
     string email = 3;
 }

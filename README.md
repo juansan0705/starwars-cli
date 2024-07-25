@@ -1,38 +1,65 @@
 # StarWars CLI
 
 ## Descripción
-Esta herramienta CLI envía mensajes en formato Protobuf a un sistema de broker de mensajes (Kafka).
+
+Esta es una guía para usar la herramienta CLI que envía eventos en formato Protobuf a un sistema de broker de mensajes (Kafka).
 
 ## Requisitos
+
 - Java 21
 - Apache Kafka
-- Gradle
+- Protobuf
+- Maven
 
 ## Configuración
 
 1. **Compilar el proyecto**
 
    ```bash
-   ./gradlew build
+    mvn clean compile
     ```
-2. **Crear archivo de configuración de Kafka**
+2. **Empaquetar el proyecto**
 
    ```bash
-    bootstrap.servers=localhost:9092
-   ```
-3.  **Preparar el archivo JSON**
+    mvn clean package
+    ```
+3.  **Crear Broker de Kafka**
 
    ```bash
-    {
-        "name": "Luke Skywalker",
-        "id": 1,
-        "email": "luke@force.com"
-    } 
-    ```
-4.  **Ejecutar la herramienta**
+- Primer paso descargar el archivo de Kafka desde la página oficial de Apache Kafka.
+   
+- Segundo paso descomprimir el archivo preferiblemente en C:\ y abrir la terminal de comandos.
+   
+- Tercer paso ejecutar el servidor de Zookeeper.
+  ```
+  .\bin\windows\zookeeper-server-start.bat .\config\zookeeper
+  ``` 
+- Cuarto paso ejecutar el servidor de Kafka.
+  ```
+  .\bin\windows\kafka-server-start.bat .\config\server.properties
+  ``` 
+- Quinto paso crear un tópico.
+  ```
+   kafka-topics.bat --create --bootstrap-server localhost:9092 --topic test
+  ```
+- Sexto paso ejecutar el productor y consumidor.
+  ```
+  kafka-console-producer.bat --broker-list localhost:9092 --topic test
+  ```
+4.  **Preparar el archivo JSON para mandarlo al consumidor**
 
-   ```bash
-    java -cp build/libs/message-broker-cli-1.0-SNAPSHOT.jar com.example.MessageBrokerCLI config.properties input.json
-    ```
+```bash
+ {
+     "name": "Luke Skywalker",
+     "id": 1,
+     "email": "luke@force.com"
+ } 
+ ```
+
+5. **Ejecutar el broker de mensajes desde la terminal**
+
+```bash
+ java -jar target/starwars-cli-1.0-SNAPSHOT-jar-with-dependencies.jar "localhost:9092" "src/main/resources/person.json"
+```
 
 

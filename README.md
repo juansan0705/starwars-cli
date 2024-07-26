@@ -1,52 +1,52 @@
 # StarWars CLI
 
-## Descripción
+## Description
 
-Esta es una guía para usar la herramienta CLI que envía eventos en formato Protobuf a un sistema de broker de mensajes (Kafka).
+This is a guide to using the CLI tool that sends events in Protobuf format to a message broker system (Kafka).
 
-## Requisitos
+## Requirements
 
 - Java 21
 - Apache Kafka
 - Protobuf
 - Maven
 
-## Configuración
+## Configuration
 
-1. **Compilar el proyecto**
+1. **Compile the project**
 
    ```bash
     mvn clean compile
     ```
-2. **Empaquetar el proyecto**
+2. **Package the project**
 
    ```bash
     mvn clean package
     ```
-3.  **Crear Broker de Kafka**
+3.  **Create Kafka Broker**
 
    ```bash
-- Primer paso descargar el archivo de Kafka desde la página oficial de Apache Kafka.
+- First step, download the Kafka file from the official Apache Kafka website.
    
-- Segundo paso descomprimir el archivo preferiblemente en C:\ y abrir la terminal de comandos.
+- Second step, unzip the file preferably in C:\ and open the cmd terminal.
    
-- Tercer paso ejecutar el servidor de Zookeeper.
+- Third step, run the Zookeeper server.
   ```
   .\bin\windows\zookeeper-server-start.bat .\config\zookeeper
   ``` 
-- Cuarto paso ejecutar el servidor de Kafka.
+- Fourth step, run the Kafka server.
   ```
   .\bin\windows\kafka-server-start.bat .\config\server.properties
   ``` 
-- Quinto paso crear un tópico.
+- Fifth step, create a topic.
   ```
    kafka-topics.bat --create --bootstrap-server localhost:9092 --topic test
   ```
-- Sexto paso ejecutar el productor y consumidor.
+- Sixth step, run the producer and consumer.
   ```
   kafka-console-producer.bat --broker-list localhost:9092 --topic test
   ```
-4.  **Preparar el archivo JSON para mandarlo al consumidor**
+4.  **Prepare the JSON file to send to the consumer**
 
 ```bash
  {
@@ -56,7 +56,7 @@ Esta es una guía para usar la herramienta CLI que envía eventos en formato Pro
  } 
  ```
 
-5. **Ejecutar el broker de mensajes desde la terminal**
+5. **Run the message broker from the terminal**
 
 ```bash
  java -jar target/starwars-cli-1.0-SNAPSHOT-jar-with-dependencies.jar "localhost:9092" "src/main/resources/person.json"

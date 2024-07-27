@@ -41,9 +41,8 @@ This is a guide to using the CLI tool that sends events in Protobuf format to a 
   ```
    .\bin\windows\kafka-topics.bat --create --bootstrap-server localhost:9092 --topic person-topic
   ```
-- Sixth step, run the producer and consumer.
+- Sixth step, run the consumer.
   ```
-  .\bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic person-topic
   .\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic person-topic --from-beginning
   ```
 4.  **Prepare the JSON file to send to the consumer**
@@ -62,4 +61,5 @@ This is a guide to using the CLI tool that sends events in Protobuf format to a 
  java -jar target/starwars-cli-1.0-SNAPSHOT-jar-with-dependencies.jar "localhost:9092" "src/main/resources/person.json"
 ```
 
+- And finally check in your consumer that it has received the message (json) correctly
 

@@ -1,4 +1,4 @@
-# StarWars CLI
+# Message Broker CLI
 
 ## Description
 
@@ -23,16 +23,15 @@ This is a guide to using the CLI tool that sends events in Protobuf format to a 
    ```bash
     mvn clean package
     ```
-3.  **Create Kafka Broker**
+3.  **Set up Kafka Broker**
 
-   ```bash
-- First step, download the Kafka file from the official Apache Kafka website.
+- First step, download the Kafka distribution from the official Apache Kafka website.
    
-- Second step, unzip the file preferably in C:\ and open the cmd terminal.
+- Second step, unzip the file preferably in C:\ and open a command prompt and navigate to the Kafka directory.
    
 - Third step, run the Zookeeper server.
   ```
-  .\bin\windows\zookeeper-server-start.bat .\config\zookeeper
+  .\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
   ``` 
 - Fourth step, run the Kafka server.
   ```
@@ -40,11 +39,12 @@ This is a guide to using the CLI tool that sends events in Protobuf format to a 
   ``` 
 - Fifth step, create a topic.
   ```
-   kafka-topics.bat --create --bootstrap-server localhost:9092 --topic test
+   .\bin\windows\kafka-topics.bat --create --bootstrap-server localhost:9092 --topic person-topic
   ```
 - Sixth step, run the producer and consumer.
   ```
-  kafka-console-producer.bat --broker-list localhost:9092 --topic test
+  .\bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic person-topic
+  .\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic person-topic --from-beginning
   ```
 4.  **Prepare the JSON file to send to the consumer**
 

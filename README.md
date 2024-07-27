@@ -63,3 +63,4 @@ This is a guide to using the CLI tool that sends events in Protobuf format to a 
 
 - And finally check in your consumer that it has received the message (json) correctly
 
+![img.png](img.png)

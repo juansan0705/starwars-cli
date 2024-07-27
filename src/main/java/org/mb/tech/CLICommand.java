@@ -55,10 +55,14 @@ public class CLICommand implements Callable<Integer> {
     }
 
     private Person createProtobufPerson(JsonNode jsonNode) {
+        if (!jsonNode.has("name") || !jsonNode.has("id")) {
+            throw new IllegalArgumentException("Missing required fields: name and id are required.");
+        }
         return Person.newBuilder()
                 .setName(jsonNode.get("name").asText())
                 .setId(jsonNode.get("id").asInt())
-                .setEmail(jsonNode.get("email").asText())
+                .setEmail(jsonNode.has("email") ? jsonNode.get("email").asText() : "")
                 .build();
     }
+
 }

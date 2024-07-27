@@ -45,7 +45,7 @@ This is a guide to using the CLI tool that sends events in Protobuf format to a 
   ```
   .\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic person-topic --from-beginning
   ```
-4.  **Prepare the JSON file to send to the consumer**
+4.  **Prepare the JSON file to send to the consumer (this file is in src/main/resources/person.json)**
 
 ```bash
  {

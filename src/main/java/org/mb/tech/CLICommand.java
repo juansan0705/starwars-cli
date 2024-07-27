@@ -1,11 +1,9 @@
 package org.mb.tech;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
 import org.mb.tech.proto.Person;
+import org.mb.tech.service.impl.JsonServiceImpl;
+import org.mb.tech.service.impl.KafkaServiceImpl;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
@@ -34,11 +32,12 @@ public class CLICommand implements Callable<Integer> {
     @Override
     public Integer call() {
         Properties props = createKafkaProperties();
-        try (KafkaProducer<String, byte[]> producer = new KafkaProducer<>(props)) {
-            JsonNode jsonNode = readJsonFile(jsonFile);
+        try (KafkaServiceImpl kafkaServiceImpl = new KafkaServiceImpl(props)) {
+            JsonServiceImpl jsonServiceImpl = new JsonServiceImpl();
+            JsonNode jsonNode = jsonServiceImpl.readJsonFile(jsonFile);
             Person person = createProtobufPerson(jsonNode);
             byte[] messageBytes = person.toByteArray();
-            sendKafkaMessage(producer, messageBytes);
+            kafkaServiceImpl.sendKafkaMessage(messageBytes);
             System.out.println("Message sent successfully");
         } catch (IOException | ExecutionException | InterruptedException e) {
             System.err.println("Error sending message: " + e.getMessage());
@@ -55,22 +54,11 @@ public class CLICommand implements Callable<Integer> {
         return props;
     }
 
-    private JsonNode readJsonFile(File file) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readTree(file);
-    }
-
     private Person createProtobufPerson(JsonNode jsonNode) {
         return Person.newBuilder()
                 .setName(jsonNode.get("name").asText())
                 .setId(jsonNode.get("id").asInt())
                 .setEmail(jsonNode.get("email").asText())
                 .build();
-    }
-
-    private void sendKafkaMessage(KafkaProducer<String, byte[]> producer, byte[] messageBytes) throws ExecutionException, InterruptedException {
-        ProducerRecord<String, byte[]> record = new ProducerRecord<>("person-topic", messageBytes);
-        RecordMetadata metadata = producer.send(record).get();
-        System.out.printf("Message sent to topic %s partition %d offset %d%n", metadata.topic(), metadata.partition(), metadata.offset());
     }
 }
